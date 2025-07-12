@@ -1,4 +1,4 @@
-# Makefile by RushiTori - May 11th 2025
+# Makefile by RushiTori - July 12th 2025
 # ====== Everything Makefile internal related ======
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
