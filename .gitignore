@@ -1,0 +1,6 @@
+.vscode/
+objs/
+
+.clang-format
+
+LuRasterizer
