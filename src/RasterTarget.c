@@ -10,7 +10,7 @@ static Image RasterTargetToImage(const RasterTarget* screen) {
 	};
 }
 
-RasterTarget* CreateRasterTarget(uint32_t width, uint32_t height) {
+RasterTarget* RasterTargetCreate(uint32_t width, uint32_t height) {
 	RasterTarget* screen = NULL;
 	if (!Malloc(screen, sizeof(RasterTarget))) return NULL;
 
@@ -27,7 +27,7 @@ RasterTarget* CreateRasterTarget(uint32_t width, uint32_t height) {
 	return screen;
 }
 
-void FreeRasterTarget(RasterTarget* screen) {
+void RasterTargetFree(RasterTarget* screen) {
 	Free(screen->pixels);
 	UnloadTexture(screen->tex);
 	Free(screen);

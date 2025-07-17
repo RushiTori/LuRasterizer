@@ -13,7 +13,7 @@ bool AppInit(App* app) {
 	SetTargetFPS(60);
 	InitWindow(winWidth, winHeight, "LuRaster - made with Raylib in C");
 
-	app->rasterTarget = CreateRasterTarget(rasterWidth, rasterHeight);
+	app->rasterTarget = RasterTargetCreate(rasterWidth, rasterHeight);
 	if (!app->rasterTarget) {
 		CloseWindow();
 		return false;
@@ -54,6 +54,6 @@ void AppRender(const App* app) {
 }
 
 void AppClose(App* app) {
-	FreeRasterTarget(app->rasterTarget);
+	RasterTargetFree(app->rasterTarget);
 	CloseWindow();
 }

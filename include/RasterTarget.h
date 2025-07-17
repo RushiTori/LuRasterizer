@@ -1,14 +1,7 @@
 #ifndef RASTER_TARGET_H
 #define RASTER_TARGET_H
 
-#include <LuLib/LuFile.h>
-#include <LuLib/LuMemSafety.h>
-#include <raylib.h>
-
-#undef Clamp
-#undef Lerp
-
-#include <raymath.h>
+#include "RasterCommon.h"
 
 typedef struct RasterTarget {
 	Color* pixels;
@@ -18,8 +11,8 @@ typedef struct RasterTarget {
 	Texture tex;
 } RasterTarget;
 
-RasterTarget* CreateRasterTarget(uint32_t width, uint32_t height);
-void FreeRasterTarget(RasterTarget* screen);
+RasterTarget* RasterTargetCreate(uint32_t width, uint32_t height);
+void RasterTargetFree(RasterTarget* screen);
 
 bool RasterTargetSaveToFile(const RasterTarget* screen, const char* path);
 
