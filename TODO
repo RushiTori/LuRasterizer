@@ -1,5 +1,11 @@
 TODO | Add Models
+	(done) loading
+	(todo) rendering
 
 TODO | Add Transforms
 
 TODO | Add Camera
+
+TODO | Improve the model loading
+	(todo) accept models with just U tex coordinates instead of asume UV
+	(todo) accept all the other face line types (not assume always v/t/n)

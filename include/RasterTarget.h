@@ -1,7 +1,7 @@
 #ifndef RASTER_TARGET_H
 #define RASTER_TARGET_H
 
-#include "RasterCommon.h"
+#include "RasterModel.h"
 
 typedef struct RasterTarget {
 	Color* pixels;
