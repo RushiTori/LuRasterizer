@@ -4,6 +4,7 @@
 #include <LuLib/LuFile.h>
 #include <LuLib/LuMemSafety.h>
 #include <raylib.h>
+#include <stdlib.h>
 
 #undef Clamp
 #undef Lerp

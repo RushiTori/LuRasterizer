@@ -6,7 +6,7 @@
 typedef struct App {
 	RasterTarget* rasterTarget;
 
-	Vector2 a, b;
+	RasterModel* cubeModel;
 } App;
 
 bool AppInit(App* app);

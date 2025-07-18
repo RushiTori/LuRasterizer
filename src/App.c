@@ -19,27 +19,21 @@ bool AppInit(App* app) {
 		return false;
 	}
 
-	app->a = (Vector2){.x = nanf(""), .y = nanf("")};
-	app->b = (Vector2){.x = nanf(""), .y = nanf("")};
+	app->cubeModel = LoadRasterModelFromFile("models/cube.obj");
+	if (!app->cubeModel) {
+		RasterTargetFree(app->rasterTarget);
+		CloseWindow();
+		return false;
+	}
 
 	return true;
 }
 
-static bool Vector2IsNan(Vector2 v) { return (isnan(v.x) || isnan(v.y)); }
-
 void AppUpdate(App* app) {
-	Vector2 mousePos = GetMousePosition();
-	mousePos = Vector2Scale(mousePos, 1.0f / RASTER_SCALE);
-
 	RasterTargetClearBackground(app->rasterTarget, PINK);
 
-	if (IsKeyPressed(KEY_KP_1)) app->a = mousePos;
-	if (IsKeyPressed(KEY_KP_2)) app->b = mousePos;
-
-	if (!Vector2IsNan(app->a) && !Vector2IsNan(app->b)) RasterTargetDrawTriangle(app->rasterTarget, app->a, app->b, mousePos, RED);
-	if (!Vector2IsNan(app->a)) RasterTargetDrawPixel(app->rasterTarget, app->a.x, app->a.y, BLUE);
-	if (!Vector2IsNan(app->b)) RasterTargetDrawPixel(app->rasterTarget, app->b.x, app->b.y, BLUE);
-	RasterTargetDrawPixel(app->rasterTarget, mousePos.x, mousePos.y, BLUE);
+	srand(1);  // So that the cube always has the same colors
+	RasterTargetDrawModel(app->rasterTarget, app->cubeModel);
 
 	RasterTargetUpdateTexture(app->rasterTarget);
 }

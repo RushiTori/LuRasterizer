@@ -131,6 +131,15 @@ static Vector2 Vector2Round(Vector2 v) {
 	};
 }
 
+static float SignedTriangleArea2(Vector2 a, Vector2 b, Vector2 c) { return (c.x - a.x) * (b.y - a.y) + (c.y - a.y) * (a.x - b.x); }
+
+static bool PointInClockwiseTriangle(Vector2 p, Vector2 a, Vector2 b, Vector2 c) {
+	const float areaABP = SignedTriangleArea2(a, b, p);
+	const float areaBCP = SignedTriangleArea2(b, c, p);
+	const float areaCAP = SignedTriangleArea2(c, a, p);
+	return ((areaABP >= 0) && (areaBCP >= 0) && (areaCAP >= 0));
+}
+
 void RasterTargetDrawTriangle(RasterTarget* screen, Vector2 a, Vector2 b, Vector2 c, Color col) {
 	const Vector2 roundedA = Vector2Round(a);
 	const Vector2 roundedB = Vector2Round(b);
@@ -163,9 +172,42 @@ void RasterTargetDrawTriangle(RasterTarget* screen, Vector2 a, Vector2 b, Vector
 	for (int32_t y = minY; y < maxY; y++) {
 		for (int32_t x = minX; x < maxX; x++) {
 			Vector2 pos = (Vector2){.x = x, .y = y};
-			if (!CheckCollisionPointTriangle(pos, a, b, c)) continue;
+			if (!PointInClockwiseTriangle(pos, a, b, c)) continue;
 
 			RasterTargetDrawPixelFast(screen, x, y, col);
+		}
+	}
+}
+
+static Vector2 RasterWorldToScreen(RasterTarget* screen, Vector3 worldPos) {
+	const Vector2 halfScreenSizes = (Vector2){
+		.x = screen->width / 2.0f,
+		.y = screen->height / 2.0f,
+	};
+
+	const float screenHeightInWorld = 5.0f;
+	const float pixelsPerWorldUnit = screen->height / screenHeightInWorld;
+
+	return (Vector2){
+		.x = halfScreenSizes.x + worldPos.x * pixelsPerWorldUnit,
+		.y = halfScreenSizes.y + worldPos.y * pixelsPerWorldUnit,
+	};
+}
+
+void RasterTargetDrawModel(RasterTarget* screen, const RasterModel* model) {
+	for (size_t i = 0; i < model->facesSize; i++) {
+		const RasterModelFace* face = model->faces + i;
+
+		uint16_t aIdx = face->vertexIndeces[0];
+		const Vector2 a = RasterWorldToScreen(screen, model->vertices[aIdx]);
+		for (size_t j = 1; j < face->indicesSize - 1; j++) {
+			const uint16_t bIdx = face->vertexIndeces[j];
+			const Vector2 b = RasterWorldToScreen(screen, model->vertices[bIdx]);
+
+			const uint16_t cIdx = face->vertexIndeces[j + 1];
+			const Vector2 c = RasterWorldToScreen(screen, model->vertices[cIdx]);
+
+			RasterTargetDrawTriangle(screen, a, b, c, GetColor((rand() << 1) | 0xFF));
 		}
 	}
 }

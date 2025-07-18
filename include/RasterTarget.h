@@ -23,5 +23,6 @@ void RasterTargetRenderTextureEx(const RasterTarget* screen, uint32_t scale);
 void RasterTargetClearBackground(RasterTarget* screen, Color col);
 void RasterTargetDrawPixel(RasterTarget* screen, uint32_t x, uint32_t y, Color col);
 void RasterTargetDrawTriangle(RasterTarget* screen, Vector2 a, Vector2 b, Vector2 c, Color col);
+void RasterTargetDrawModel(RasterTarget* screen, const RasterModel* model);
 
 #endif	// RASTER_TARGET_H
